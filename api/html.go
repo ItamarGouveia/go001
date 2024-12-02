@@ -2,11 +2,13 @@ package handler
 
 import (
 	"net/http"
+	"path/filepath"
 )
 
 func HtmlRendering(w http.ResponseWriter, r *http.Request) {
-	htmlFile := "../public/blog/teste.html"
+	// Caminho para o arquivo HTML dentro da pasta "public"
+	htmlFile := filepath.Join("app", "public", "teste.html")
 
-	// Serve o arquivo HTML externo
+	// Serve o arquivo HTML da pasta public
 	http.ServeFile(w, r, htmlFile)
 }
