@@ -1,10 +1,16 @@
 package handler
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 	"path/filepath"
 )
+
+// Estrutura para resposta de erro em formato JSON
+type ErrorResponse struct {
+	Message string `json:"message"`
+}
 
 func HtmlRendering(w http.ResponseWriter, r *http.Request) {
 	// Caminho para o arquivo HTML na pasta "public"
@@ -17,7 +23,22 @@ func HtmlRendering(w http.ResponseWriter, r *http.Request) {
 	_, err := filepath.Glob(htmlFile)
 	if err != nil {
 		log.Printf("Erro ao encontrar o arquivo: %v", err)
-		http.Error(w, "Erro interno do servidor", http.StatusInternalServerError)
+		// Retornando erro como JSON
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(ErrorResponse{Message: "Erro interno do servidor"})
+		return
+	}
+
+	// Serve o arquivo HTML da pasta public
+	err = http.ServeFile(w, r, htmlFile)
+	if err != nil {
+		// Log se ocorrer um erro ao servir o arquivo
+		log.Printf("Erro ao servir o arquivo: %v\n", err)
+		// Retornando erro como JSON
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(ErrorResponse{Message: "Arquivo não encontrado"})
 		return
 	}
 
