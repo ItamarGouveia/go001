@@ -30,18 +30,6 @@ func HtmlRendering(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Serve o arquivo HTML da pasta public
-	err = http.ServeFile(w, r, htmlFile)
-	if err != nil {
-		// Log se ocorrer um erro ao servir o arquivo
-		log.Printf("Erro ao servir o arquivo: %v\n", err)
-		// Retornando erro como JSON
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusNotFound)
-		json.NewEncoder(w).Encode(ErrorResponse{Message: "Arquivo não encontrado"})
-		return
-	}
-
 	// Log para confirmar que o arquivo foi servido corretamente
 	log.Printf("Arquivo %s servido com sucesso.\n", htmlFile)
 }
