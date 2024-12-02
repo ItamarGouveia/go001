@@ -1,5 +1,12 @@
 {
-  "github": {
-    "silent": true
-  }
+  "routes": [
+    {
+      "src": "/assets/.*",
+      "dest": "/assets/.*"
+    },
+    {
+      "src": "/.*",
+      "dest": "api/router.go"
+    }
+  ]
 }
