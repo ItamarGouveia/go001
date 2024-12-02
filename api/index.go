@@ -12,7 +12,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	// Alterado para servir o arquivo index.html
 	server.GET("/", func(context *Context) {
 		// Caminho relativo ao arquivo index.html
-		http.ServeFile(w, r, "index.html")
+		http.ServeFile(w, r, "../index.html")
 	})
 
 	server.Handle(w, r)
